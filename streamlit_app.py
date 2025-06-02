@@ -4,12 +4,26 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import mannwhitneyu, ttest_ind, f_oneway, wilcoxon, kruskal, chi2_contingency
 
-# Load data
-df = pd.read_csv("base_vs_test.csv")
-
+st.set_page_config(page_title="Generic Performance Dashboard", layout="centered")
 st.title("📊 Generic Performance Dashboard")
 
+# File upload
+uploaded = st.file_uploader("Upload your CSV file", type="csv")
+if not uploaded:
+    st.warning("👈 Please upload a CSV file to get started.")
+    st.stop()
+
+# Load the uploaded CSV
+try:
+    df = pd.read_csv(uploaded)
+except Exception as e:
+    st.error(f"❌ Could not read the file: {e}")
+    st.stop()
+
 num_cols = df.select_dtypes(include='number').columns.tolist()
+if len(num_cols) < 2:
+    st.error("❌ Your file needs at least two numeric columns.")
+    st.stop()
 
 # Dropdowns
 col1 = st.selectbox("X-axis", num_cols, index=0)
