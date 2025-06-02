@@ -13,7 +13,7 @@ if not uploaded:
     st.warning("👈 Please upload a CSV file to get started.")
     st.stop()
 
-# Load the uploaded CSV
+# Load the uploaded CSV.
 try:
     df = pd.read_csv(uploaded)
 except Exception as e:
